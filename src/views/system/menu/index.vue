@@ -35,10 +35,13 @@
           </template>
         </el-table-column>
         <el-table-column show-overflow-tooltip prop="activeMenu" label="高亮菜单" />
-        <el-table-column fixed="right" label="操作" align="center" width="120">
+        <el-table-column fixed="right" label="操作" align="center" width="150">
           <template slot-scope="scope">
             <el-tooltip content="编辑" effect="dark" placement="top">
               <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)" />
+            </el-tooltip>
+            <el-tooltip content="复制" effect="dark" placement="top">
+              <el-button size="mini" icon="el-icon-copy-document" circle type="primary" @click="copy(scope.row)" />
             </el-tooltip>
             <el-tooltip class="delete-popover" content="删除" effect="dark" placement="top">
               <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.ID)">
@@ -253,6 +256,26 @@ export default {
 
       this.dialogFormTitle = '修改菜单'
       this.dialogType = 'update'
+      this.dialogFormVisible = true
+    },
+
+    copy(row) {
+      // this.dialogFormData.ID = row.ID
+      this.dialogFormData.title = row.title
+      this.dialogFormData.name = row.name
+      this.dialogFormData.icon = row.icon
+      this.dialogFormData.path = row.path
+      this.dialogFormData.component = row.component
+      this.dialogFormData.redirect = row.redirect
+      this.dialogFormData.sort = row.sort
+      this.dialogFormData.status = row.status === 1 ? '否' : '是'
+      this.dialogFormData.hidden = row.hidden === 1 ? '是' : '否'
+      this.dialogFormData.noCache = row.noCache === 1 ? '否' : '是'
+      this.dialogFormData.activeMenu = row.activeMenu
+      this.dialogFormData.parentId = row.parentId
+
+      this.dialogFormTitle = '复制菜单'
+      this.dialogType = 'create'
       this.dialogFormVisible = true
     },
 

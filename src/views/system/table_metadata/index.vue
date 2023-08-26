@@ -265,7 +265,7 @@ export default {
         }
         row.column_comment = title + ';' + type + ';' + validate + validateArray.join(',') + '"'
       }
-      if (row.column_comment.indexOf('title') === -1) {
+      if (row.column_comment.indexOf('title:') === -1) {
         var title = 'title:"' + row.column_comment + '"'
         //row.column_comment = title + ';' + row.column_comment
         var validate = 'validate:"'
@@ -278,7 +278,7 @@ export default {
           || row.data_type === 'longtext' || row.data_type === 'mediumtext' || row.data_type === 'tinytext') {
           validateArray.push('min=1,max=' + row.character_max_length)
         }
-        row.column_comment = title + ';' + validate + validate + validateArray.join(',') + '"'
+        row.column_comment = title + ';' + validate  + validateArray.join(',') + '"'
       }
 
       row.column_comment = row.column_comment.replace(/'/g, '')

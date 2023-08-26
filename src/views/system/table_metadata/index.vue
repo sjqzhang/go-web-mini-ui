@@ -124,7 +124,7 @@ import {
   deleteTableMetadata,
   getTableMetadata,
   updateTableMetadata
-} from '@/api/business/table_metadata'
+} from '@/api/system/table_metadata'
 
 export default {
   name: 'TableMetadata',

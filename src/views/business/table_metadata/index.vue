@@ -254,27 +254,31 @@ export default {
         var title = 'title:"' + row.column_name + '"'
         var type = 'type:"input"'
         var validate = 'validate:"'
+        //define validate array
+        var validateArray = []
         if (row.is_nullable === 'NO') {
-          validate += 'required'
+          validateArray.push('required')
         }
         if (row.data_type === 'varchar' || row.data_type === 'char' || row.data_type === 'text'
           || row.data_type === 'longtext' || row.data_type === 'mediumtext' || row.data_type === 'tinytext') {
-          validate += ',min=1,max=' + row.character_max_length + '"'
+          validateArray.push('min=1,max=' + row.character_max_length)
         }
-        row.column_comment = title + ';' + type + ';' + validate
+        row.column_comment = title + ';' + type + ';' + validate + validateArray.join(',') + '"'
       }
       if (row.column_comment.indexOf('title') === -1) {
         var title = 'title:"' + row.column_comment + '"'
         //row.column_comment = title + ';' + row.column_comment
         var validate = 'validate:"'
+        //define validate array
+        var validateArray = []
         if (row.is_nullable === 'NO') {
-          validate += 'required'
+          validateArray.push('required')
         }
         if (row.data_type === 'varchar' || row.data_type === 'char' || row.data_type === 'text'
           || row.data_type === 'longtext' || row.data_type === 'mediumtext' || row.data_type === 'tinytext') {
-          validate += ',min=1,max=' + row.character_max_length + '"'
+          validateArray.push('min=1,max=' + row.character_max_length)
         }
-        row.column_comment = title + ';' + validate
+        row.column_comment = title + ';' + validate + validate + validateArray.join(',') + '"'
       }
 
       row.column_comment = row.column_comment.replace(/'/g, '')

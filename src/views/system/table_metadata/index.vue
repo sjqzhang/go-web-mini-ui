@@ -28,12 +28,13 @@
                     @keyup.enter.native="search" @clear="search"
           />
         </el-form-item>
+        <!--
         <el-form-item label="character_max_length">
           <el-input v-model.trim="params.character_max_length" type="input" clearable placeholder="character_max_length"
                     @keyup.enter.native="search" @clear="search"
           />
         </el-form-item>
-
+         -->
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
         </el-form-item>
@@ -225,7 +226,7 @@ export default {
           column_comment: 'like %' + this.params.column_comment + '%',
           is_nullable: 'like %' + this.params.is_nullable + '%',
           data_type: 'like %' + this.params.data_type + '%',
-          character_max_length: 'like %' + this.params.character_max_length + '%'
+       //   character_max_length: 'like %' + this.params.character_max_length + '%'
 
         }
         const { data } = await getTableMetadata(searchParams)

@@ -1,7 +1,7 @@
 
 import request from '@/utils/request'
 
-// 获取字典列表
+// 获取dictionary列表
 export function getDictionaryPager(params) {
   return request({
     url: '/api/system/dictionary/pager',
@@ -10,7 +10,7 @@ export function getDictionaryPager(params) {
   })
 }
 
-// 获取字典列表
+// 获取dictionary列表
 export function getDictionary(params) {
   return request({
     url: '/api/system/dictionary',
@@ -20,7 +20,7 @@ export function getDictionary(params) {
 }
 
 
-// 创建字典
+// 创建dictionary
 export function createDictionary(data) {
   return request({
     url: '/api/system/dictionary',
@@ -29,7 +29,7 @@ export function createDictionary(data) {
   })
 }
 
-// 更新字典
+// 更新dictionary
 export function updateDictionary(Id, data) {
   return request({
     url: '/api/system/dictionary/' + Id,
@@ -38,7 +38,7 @@ export function updateDictionary(Id, data) {
   })
 }
 
-// 删除字典
+// 删除dictionary
 export function deleteDictionary(data) {
   return request({
     url: '/api/system/dictionary',

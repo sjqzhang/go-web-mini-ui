@@ -1,7 +1,7 @@
 
 import request from '@/utils/request'
 
-// 获取字典类型列表
+// 获取dictionary_type列表
 export function getDictionaryTypePager(params) {
   return request({
     url: '/api/system/dictionaryType/pager',
@@ -10,7 +10,7 @@ export function getDictionaryTypePager(params) {
   })
 }
 
-// 获取字典类型列表
+// 获取dictionary_type列表
 export function getDictionaryType(params) {
   return request({
     url: '/api/system/dictionaryType',
@@ -20,7 +20,7 @@ export function getDictionaryType(params) {
 }
 
 
-// 创建字典类型
+// 创建dictionary_type
 export function createDictionaryType(data) {
   return request({
     url: '/api/system/dictionaryType',
@@ -29,7 +29,7 @@ export function createDictionaryType(data) {
   })
 }
 
-// 更新字典类型
+// 更新dictionary_type
 export function updateDictionaryType(Id, data) {
   return request({
     url: '/api/system/dictionaryType/' + Id,
@@ -38,7 +38,7 @@ export function updateDictionaryType(Id, data) {
   })
 }
 
-// 删除字典类型
+// 删除dictionary_type
 export function deleteDictionaryType(data) {
   return request({
     url: '/api/system/dictionaryType',

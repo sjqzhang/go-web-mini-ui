@@ -4,15 +4,17 @@
   <div>
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
-        
+
         <el-form-item label="字典名称"><el-input v-model.trim="params.dict_name" type="input" clearable placeholder="字典名称" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
+        <!--
         <el-form-item label="状态"><el-input v-model.trim="params.status" type="input" clearable placeholder="状态" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item label="备注"><el-input v-model.trim="params.remark" type="input" clearable placeholder="备注" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
         <el-form-item label="排序"><el-input v-model.trim="params.sort" type="input" clearable placeholder="排序" @keyup.enter.native="search" @clear="search" />
         </el-form-item>
+        -->
 
         <el-form-item>
           <el-button :loading="loading" icon="el-icon-search" type="primary" @click="search">查询</el-button>
@@ -27,12 +29,21 @@
 
       <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
         <el-table-column type="selection" width="55" align="center" />
-        
+
         <el-table-column show-overflow-tooltip sortable prop="dict_name" label="字典名称" />
-        <el-table-column show-overflow-tooltip sortable prop="status" label="状态" />
+        <!--
+        <el-table-column show-overflow-tooltip sortable prop="status" label="状态" >
+          <template slot-scope="scope">
+            <el-tag v-if="scope.status === 1" type="success">正常</el-tag>
+            <el-tag v-else type="danger">禁用</el-tag>
+          </template>
+        </el-table-column>
+        -->
         <el-table-column show-overflow-tooltip sortable prop="remark" label="备注" />
+        <!--
         <el-table-column show-overflow-tooltip sortable prop="sort" label="排序" />
-        <el-table-column fixed="right" label="操作" align="center" width="120">
+        -->
+        <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-tooltip content="复制" effect="dark" placement="top">
               <el-button size="mini" icon="el-icon-copy-document" circle type="primary" @click="copy(scope.row)" />
@@ -69,9 +80,13 @@
         <el-switch v-model="dialogFormData.status" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item><el-form-item label="备注" prop="remark">
         <el-input type="textarea" v-model="dialogFormData.remark" :placeholder="备注"></el-input>
-          </el-form-item><el-form-item label="排序" prop="sort">
+
+          </el-form-item>
+          <!--
+          <el-form-item label="排序" prop="sort">
         <el-input type="number" oninput="value=value.replace(/[^0-9]/g,'')" v-model="dialogFormData.sort" :placeholder="排序"></el-input>
           </el-form-item>
+          -->
         </el-form>
         <div slot="footer" class="dialog-footer">
           <el-button size="mini" @click="cancelForm()">取 消</el-button>
@@ -113,7 +128,7 @@ export default {
         status: 0,
         remark: '',
         sort: 0,
-        
+
     // content: '',
         pageNum: 1,
         pageSize: 10
@@ -134,7 +149,7 @@ export default {
           status: 0,
           remark: '',
           sort: 0,
-          
+
       },
       // dialogFormRules: {
       //   path: [
@@ -178,7 +193,7 @@ export default {
           ...this.params,
         dict_name : 'like %'+ this.params.dict_name+'%',
           remark : 'like %'+ this.params.remark+'%',
-          
+
         }
         const { data } = await getDictionaryTypePager(searchParams)
         this.tableData = data.list
@@ -202,7 +217,7 @@ export default {
       this.dialogFormData.status = row.status
       this.dialogFormData.remark = row.remark
       this.dialogFormData.sort = row.sort
-      
+
       this.dialogFormTitle = '修改'
       this.dialogType = 'update'
       this.dialogFormVisible = true
@@ -215,7 +230,7 @@ export default {
       this.dialogFormData.status = row.status
       this.dialogFormData.remark = row.remark
       this.dialogFormData.sort = row.sort
-      
+
       this.dialogFormTitle = '复制'
       this.dialogType = 'create'
       this.dialogFormVisible = true
@@ -233,7 +248,7 @@ export default {
             this.dialogFormData.status =  Number(this.dialogFormData.status)
             this.dialogFormData.remark =  String(this.dialogFormData.remark)
             this.dialogFormData.sort =  Number(this.dialogFormData.sort)
-            
+
 
             if (this.dialogType === 'create') {
               const { message } = await createDictionaryType(this.dialogFormData)
@@ -279,7 +294,7 @@ export default {
       status:0,
       remark:'',
       sort:0,
-      
+
 
       }
     },

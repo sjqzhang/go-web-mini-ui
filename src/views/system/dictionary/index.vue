@@ -1,15 +1,23 @@
-
-
 <template>
   <div>
     <el-card class="container-card" shadow="always">
       <el-form size="mini" :inline="true" :model="params" class="demo-form-inline">
 
-        <el-form-item label="字典标签"><el-input v-model.trim="params.dict_label" type="input" clearable placeholder="字典标签" @keyup.enter.native="search" @clear="search" />
+        <el-form-item label="字典标签">
+          <el-input v-model.trim="params.dict_label" type="input" clearable placeholder="字典标签"
+                    @keyup.enter.native="search" @clear="search"
+          />
         </el-form-item>
-        <el-form-item label="字典键值"><el-input v-model.trim="params.dict_value" type="input" clearable placeholder="字典键值" @keyup.enter.native="search" @clear="search" />
+        <el-form-item label="字典键值">
+          <el-input v-model.trim="params.dict_value" type="input" clearable placeholder="字典键值"
+                    @keyup.enter.native="search" @clear="search"
+          />
         </el-form-item>
-        <el-form-item label="字典类型"><common-select value-key="id" label-key="dict_name" :selected-value="params.dict_type_id"  @change="changeSearchDictType"  :options="dictTypeOptions" />
+        <el-form-item label="字典类型">
+          <common-select value-key="id" label-key="dict_name" :custom-value="params.dict_type_id"
+                         :selected-value="params.dict_type_id"
+                         @change="changeSearchDictType" :options="dictTypeOptions"
+          />
         </el-form-item>
         <!--
         <el-form-item label="备注"><el-input v-model.trim="params.remark" type="input" clearable placeholder="备注" @keyup.enter.native="search" @clear="search" />
@@ -26,33 +34,38 @@
           <el-button :loading="loading" icon="el-icon-plus" type="warning" @click="create">新增</el-button>
         </el-form-item>
         <el-form-item>
-          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger" @click="batchDelete">批量删除</el-button>
+          <el-button :disabled="multipleSelection.length === 0" :loading="loading" icon="el-icon-delete" type="danger"
+                     @click="batchDelete"
+          >批量删除
+          </el-button>
         </el-form-item>
       </el-form>
 
-      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%" @selection-change="handleSelectionChange">
-        <el-table-column type="selection" width="55" align="center" />
+      <el-table v-loading="loading" :data="tableData" border stripe style="width: 100%"
+                @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" width="55" align="center"/>
 
-        <el-table-column show-overflow-tooltip sortable prop="dict_label" label="字典标签" />
-        <el-table-column show-overflow-tooltip sortable prop="dict_value" label="字典键值" />
-        <el-table-column show-overflow-tooltip sortable prop="dict_type_id" :formatter="formatType" label="字典类型" />
-        <el-table-column show-overflow-tooltip sortable prop="remark" label="备注" />
-        <el-table-column show-overflow-tooltip sortable prop="sort" label="排序" />
+        <el-table-column show-overflow-tooltip sortable prop="dict_label" label="字典标签"/>
+        <el-table-column show-overflow-tooltip sortable prop="dict_value" label="字典键值"/>
+        <el-table-column show-overflow-tooltip sortable prop="dict_type_id" :formatter="formatType" label="字典类型"/>
+        <el-table-column show-overflow-tooltip sortable prop="remark" label="备注"/>
+        <el-table-column show-overflow-tooltip sortable prop="sort" label="排序"/>
         <!--
         <el-table-column show-overflow-tooltip sortable prop="status" label="状态" />
         -->
         <el-table-column fixed="right" label="操作" align="center" width="160">
           <template slot-scope="scope">
             <el-tooltip content="复制" effect="dark" placement="top">
-              <el-button size="mini" icon="el-icon-copy-document" circle type="primary" @click="copy(scope.row)" />
+              <el-button size="mini" icon="el-icon-copy-document" circle type="primary" @click="copy(scope.row)"/>
             </el-tooltip>
 
             <el-tooltip content="编辑" effect="dark" placement="top">
-              <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)" />
+              <el-button size="mini" icon="el-icon-edit" circle type="primary" @click="update(scope.row)"/>
             </el-tooltip>
             <el-tooltip class="delete-popover" content="删除" effect="dark" placement="top">
               <el-popconfirm title="确定删除吗？" @onConfirm="singleDelete(scope.row.id)">
-                <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger" />
+                <el-button slot="reference" size="mini" icon="el-icon-delete" circle type="danger"/>
               </el-popconfirm>
             </el-tooltip>
           </template>
@@ -68,22 +81,32 @@
         background
         style="margin-top: 10px;float:right;margin-bottom: 10px;"
         @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"/>
+        @current-change="handleCurrentChange"
+      />
 
       <el-dialog :title="dialogFormTitle" :visible.sync="dialogFormVisible">
         <el-form ref="dialogForm" size="small" :model="dialogFormData" :rules="dialogFormRules" label-width="120px">
           <el-form-item label="字典名称" prop="dict_label">
-        <el-input v-model.trim="dialogFormData.dict_label"  :placeholder="字典名称"></el-input>
-          </el-form-item><el-form-item label="字典键值" prop="dict_value">
-        <el-input type="textarea" v-model="dialogFormData.dict_value" :placeholder="字典键值"></el-input>
-          </el-form-item><el-form-item label="字典类型" prop="dict_type_id">
-          <common-select value-key="id" label-key="dict_name" :selected-value="dialogFormData.dict_type_id"    @change="changeType"  :options="dictTypeOptions" />
-          </el-form-item><el-form-item label="备注" prop="remark">
-        <el-input type="textarea" v-model="dialogFormData.remark" :placeholder="备注"></el-input>
-          </el-form-item><el-form-item label="排序" prop="sort">
-        <el-input type="number" oninput="value=value.replace(/[^0-9]/g,'')" v-model="dialogFormData.sort" :placeholder="排序"></el-input>
-          </el-form-item><el-form-item label="状态" prop="status">
-        <el-switch v-model="dialogFormData.status" :active-value="1" :inactive-value="0"></el-switch>
+            <el-input v-model.trim="dialogFormData.dict_label" :placeholder="字典名称"></el-input>
+          </el-form-item>
+          <el-form-item label="字典键值" prop="dict_value">
+            <el-input type="textarea" v-model="dialogFormData.dict_value" :placeholder="字典键值"></el-input>
+          </el-form-item>
+          <el-form-item label="字典类型" prop="dict_type_id">
+            <common-select value-key="id" label-key="dict_name" :selected-value="dialogFormData.dict_type_id"
+                           @change="changeType" :options="dictTypeOptions"
+            />
+          </el-form-item>
+          <el-form-item label="备注" prop="remark">
+            <el-input type="textarea" v-model="dialogFormData.remark" :placeholder="备注"></el-input>
+          </el-form-item>
+          <el-form-item label="排序" prop="sort">
+            <el-input type="number" oninput="value=value.replace(/[^0-9]/g,'')" v-model="dialogFormData.sort"
+                      :placeholder="排序"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="状态" prop="status">
+            <el-switch v-model="dialogFormData.status" :active-value="1" :inactive-value="0"></el-switch>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -97,7 +120,7 @@
 </template>
 
 <script>
-import { getDictionary, getDictionaryPager, createDictionary, updateDictionary, deleteDictionary } from '@/api/system/dictionary'
+import { createDictionary, deleteDictionary, getDictionaryPager, updateDictionary } from '@/api/system/dictionary'
 import CommonSelect from '@/components/CommonSelect/CommonSelect'
 import { getDictionaryType } from '@/api/system/dictionary_type'
 
@@ -126,14 +149,13 @@ export default {
       // 查询参数
       dictTypeOptions: [],
       params: {
-      dict_label: '',
+        dict_label: '',
         dict_value: '',
-        dict_type_id: 1,
+        dict_type_id: 0,
         remark: '',
         sort: 0,
         status: 0,
 
-    // content: '',
         pageNum: 1,
         pageSize: 10
       },
@@ -148,13 +170,13 @@ export default {
       dialogType: '',
       dialogFormVisible: false,
       dialogFormData: {
-        id:'',
-            dict_label: '',
-          dict_value: '',
-          dict_type_id: 0,
-          remark: '',
-          sort: 0,
-          status: 0,
+        id: '',
+        dict_label: '',
+        dict_value: '',
+        dict_type_id: 0,
+        remark: '',
+        sort: 0,
+        status: 0
 
       },
       // dialogFormRules: {
@@ -182,11 +204,11 @@ export default {
     }
   },
   created() {
+    this.params.dict_type_id = 0
     this.getTableData()
 
   },
   methods: {
-
 
     loadDictionaryType() {
       getDictionaryType().then(res => {
@@ -214,9 +236,9 @@ export default {
       try {
         var searchParams = {
           ...this.params,
-        dict_label : 'like %'+ this.params.dict_label+'%',
-          dict_value : 'like %'+ this.params.dict_value+'%',
-          remark : 'like %'+ this.params.remark+'%',
+          dict_label: 'like %' + this.params.dict_label + '%',
+          dict_value: 'like %' + this.params.dict_value + '%',
+          remark: 'like %' + this.params.remark + '%'
 
         }
         const { data } = await getDictionaryPager(searchParams)
@@ -273,13 +295,12 @@ export default {
           this.submitLoading = true
           try {
 
-            this.dialogFormData.dict_label =  String(this.dialogFormData.dict_label)
-            this.dialogFormData.dict_value =  String(this.dialogFormData.dict_value)
-            this.dialogFormData.dict_type_id =  Number(this.dialogFormData.dict_type_id)
-            this.dialogFormData.remark =  String(this.dialogFormData.remark)
-            this.dialogFormData.sort =  Number(this.dialogFormData.sort)
-            this.dialogFormData.status =  Number(this.dialogFormData.status)
-
+            this.dialogFormData.dict_label = String(this.dialogFormData.dict_label)
+            this.dialogFormData.dict_value = String(this.dialogFormData.dict_value)
+            this.dialogFormData.dict_type_id = Number(this.dialogFormData.dict_type_id)
+            this.dialogFormData.remark = String(this.dialogFormData.remark)
+            this.dialogFormData.sort = Number(this.dialogFormData.sort)
+            this.dialogFormData.status = Number(this.dialogFormData.status)
 
             if (this.dialogType === 'create') {
               const { message } = await createDictionary(this.dialogFormData)
@@ -320,14 +341,13 @@ export default {
       this.dialogFormVisible = false
       this.$refs['dialogForm'].resetFields()
       this.dialogFormData = {
-      // content: '',
-      dict_label:'',
-      dict_value:'',
-      dict_type_id:0,
-      remark:'',
-      sort:0,
-      status:0,
-
+        // content: '',
+        dict_label: '',
+        dict_value: '',
+        dict_type_id: 0,
+        remark: '',
+        sort: 0,
+        status: 0
 
       }
     },
@@ -405,12 +425,12 @@ export default {
 </script>
 
 <style scoped>
-  .container-card{
-    margin: 10px;
-  }
+.container-card {
+  margin: 10px;
+}
 
-  .delete-popover{
-    margin-left: 10px;
-  }
+.delete-popover {
+  margin-left: 10px;
+}
 </style>
 
